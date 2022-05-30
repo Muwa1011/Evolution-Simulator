@@ -1,0 +1,13 @@
+.box {
+    margin-left: 10%;
+    background-color: rgb(233, 233, 233);
+    width: 80%;
+    height: 50em;
+}
+
+.creature {
+    width: 1em;
+    height: 1em;
+    background-color: black;
+    border-radius: 50%;
+}
