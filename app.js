@@ -27,21 +27,53 @@ function Creature(div, size, speed) {
     console.log(this)
 }
 
-function getDestination(){
-    const randomPositionLeft = Math.floor(Math.random() * 200)
+function getDestination() {
+    const randomPositionLeft = Math.floor(Math.random() * 200) + 150
     const randomPositionTop = Math.floor(Math.random() * 200)
     return [randomPositionLeft, randomPositionTop]
 }
 
-Creature.prototype.move = function () {
-    const destination = getDestination();
-    console.log(destination)
+const destination = getDestination();
+console.log(destination)
 
-    console.log(this.div.getBoundingClientRect().top)
-    this.div.style.top = this.div.getBoundingClientRect().top + 50 + 'px';
-    console.log(this.div.getBoundingClientRect().top)
+Creature.prototype.move = function () {
+
+    //this.div.style.top = this.div.getBoundingClientRect().top + 1 + 'px';
+    //Left
+    if(this.div.getBoundingClientRect().left < destination[0]){
+        this.div.style.left = this.div.getBoundingClientRect().left + 1 + 'px';
+        console.log("move right")
+        console.log(this.div.style.left)
+    } else if(this.div.getBoundingClientRect().left > destination[0]){
+        this.div.style.left = this.div.getBoundingClientRect().left - 1 + 'px';
+        console.log("move left")
+        console.log(this.div.style.left)
+    } else {
+        console.log("got there")
+        console.log(this.div.style.left)
+    }
+
+    //Top
+    if(this.div.getBoundingClientRect().top < destination[1]){
+        this.div.style.top = this.div.getBoundingClientRect().top + 1 + 'px';
+        console.log("move right")
+        console.log(this.div.style.top)
+    } else if(this.div.getBoundingClientRect().top > destination[1]){
+        this.div.style.top = this.div.getBoundingClientRect().top - 1 + 'px';
+        console.log("move left")
+        console.log(this.div.style.top)
+    } else {
+        console.log("got there")
+        console.log(this.div.style.top)
+    }
+
+
+
 }
 
+setInterval(function () {
+    creature.move()
+}, 1);
 
 const creatureDiv = document.createElement("div");
 creatureDiv.classList.add("creature")
