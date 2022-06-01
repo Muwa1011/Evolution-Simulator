@@ -33,7 +33,10 @@ function getDestination() {
     return [randomPositionLeft, randomPositionTop]
 }
 
-const destination = getDestination();
+let destination = getDestination();
+let destinationReachedLeft = false;
+let destinationReachedTop = false;
+
 console.log(destination)
 
 Creature.prototype.move = function () {
@@ -43,28 +46,30 @@ Creature.prototype.move = function () {
     if(this.div.getBoundingClientRect().left < destination[0]){
         this.div.style.left = this.div.getBoundingClientRect().left + 1 + 'px';
         console.log("move right")
-        console.log(this.div.style.left)
     } else if(this.div.getBoundingClientRect().left > destination[0]){
         this.div.style.left = this.div.getBoundingClientRect().left - 1 + 'px';
         console.log("move left")
-        console.log(this.div.style.left)
     } else {
         console.log("got there")
-        console.log(this.div.style.left)
+        destinationReachedLeft = true;
     }
 
     //Top
     if(this.div.getBoundingClientRect().top < destination[1]){
         this.div.style.top = this.div.getBoundingClientRect().top + 1 + 'px';
         console.log("move right")
-        console.log(this.div.style.top)
     } else if(this.div.getBoundingClientRect().top > destination[1]){
         this.div.style.top = this.div.getBoundingClientRect().top - 1 + 'px';
         console.log("move left")
-        console.log(this.div.style.top)
     } else {
         console.log("got there")
-        console.log(this.div.style.top)
+        destinationReachedtop = true;
+    }
+
+    if(destinationReachedLeft === true && destinationReachedtop === true){
+        destination = getDestination()
+        destinationReachedLeft = false;
+        destinationReachedtop = false;
     }
 
 
