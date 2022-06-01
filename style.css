@@ -6,8 +6,11 @@
 }
 
 .creature {
+    position: absolute;
     width: 1em;
-    height: 1em;
+    height: 1.3em;
     background-color: black;
     border-radius: 50%;
+    top: 100px;
+    left: 150px;
 }

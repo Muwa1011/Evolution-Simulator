@@ -1,4 +1,5 @@
 const box = document.querySelector(".box")
+let id = 0;
 
 /* 
 function createCreature() {
@@ -19,20 +20,33 @@ function createCreature() {
 } */
 
 function Creature(div, size, speed) {
+    this.id = id++;
     this.div = div;
     this.size = size;
     this.speed = speed;
+    console.log(this)
+}
+
+function getDestination(){
+    const randomPositionLeft = Math.floor(Math.random() * 200)
+    const randomPositionTop = Math.floor(Math.random() * 200)
+    return [randomPositionLeft, randomPositionTop]
 }
 
 Creature.prototype.move = function () {
-    this.div.style.position = 'absolute';
-    this.div.style.top = Math.floor(Math.random() * 90 + 5) + '%';
-    this.div.style.left = Math.floor(Math.random() * 90 + 5) + '%';
+    const destination = getDestination();
+    console.log(destination)
+
+    console.log(this.div.getBoundingClientRect().top)
+    this.div.style.top = this.div.getBoundingClientRect().top + 50 + 'px';
+    console.log(this.div.getBoundingClientRect().top)
 }
+
 
 const creatureDiv = document.createElement("div");
 creatureDiv.classList.add("creature")
 box.append(creatureDiv)
+
 const creature = new Creature(creatureDiv, 1, 1);
+
 creature.move()
-console.log(creature.speed)
