@@ -14,3 +14,11 @@
     top: 100px;
     left: 150px;
 }
+
+.food {
+    position: absolute;
+    width: .5em;
+    height: .5em;
+    background-color: rgb(255, 159, 49);
+    border-radius: 50%;
+}
