@@ -1,4 +1,5 @@
 const box = document.querySelector(".box")
+const populationText = document.querySelector("#population")
 let id = 0;
 
 let creatureArray = [];
@@ -108,11 +109,16 @@ function generateFood(amount) {
     }
 }
 
+function removeFood(){
+    for(foodSingle of food){
+        foodSingle.remove()
+    }
+}
+
 createCreatures(10)
 generateFood(50)
 
 setInterval(function (){
-    // const survivors = 0;
     for(creatureS of creatureArray){
         if(!creatureS.eaten){
             creatureS.div.remove()
@@ -122,11 +128,15 @@ setInterval(function (){
             creatureS.eaten = false;
             creatureS.div.style.background = "black";
             createCreatures(1);
-            //survivors++;
         }
     }
+    removeFood();
     generateFood(50)
-    //alert(survivors)
+    let population = 0;
+    for(creatureS of creatureArray){
+        population++;
+    }
+    populationText.innerText = `Population: ${population}`
     console.log(creatureArray)
 },6000)
 
