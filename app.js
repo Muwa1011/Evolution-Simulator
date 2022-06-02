@@ -26,6 +26,15 @@ function getDestination() {
     return [randomPositionLeft, randomPositionTop]
 }
 
+function goBack(){
+        const destination = [0, Math.floor(Math.random() * 600) + 200]
+        if (Math.random() < 0.5) {
+            destination[0] = 100;
+        } else {
+            destination[0] = 1700;
+        }
+        return destination;
+}
 
 Creature.prototype.move = function () {
     if (!this.eaten) {
@@ -54,7 +63,7 @@ Creature.prototype.move = function () {
             this.destinationReachedTop = false;
         }
     } else {
-        this.destination = [200, this.destination[1]]
+        
         this.destinationReachedLeft = false;
         destinationReachedTop = false;
         //Left
@@ -74,10 +83,6 @@ Creature.prototype.move = function () {
         } else {
             this.destinationReachedTop = true;
         }
-
-        //Reached
-        if (this.destinationReachedLeft === true && this.destinationReachedTop === true) {
-        }
     }
 }
 
@@ -88,7 +93,7 @@ function createCreatures(amount) {
         const rnd = getDestination()
         const oneTwo = Math.random()
         if (oneTwo < 0.5) {
-            creatureArray[i].div.style.left = "200px";
+            creatureArray[i].div.style.left = "100px";
         } else {
             creatureArray[i].div.style.left = "1700px";
 
@@ -116,7 +121,7 @@ function removeFood(){
 }
 
 createCreatures(10)
-generateFood(50)
+generateFood(100)
 
 setInterval(function (){
     for(creatureS of creatureArray){
@@ -131,7 +136,7 @@ setInterval(function (){
         }
     }
     removeFood();
-    generateFood(50)
+    generateFood(100)
     let population = 0;
     for(creatureS of creatureArray){
         population++;
@@ -157,6 +162,7 @@ Creature.prototype.eat = function () {
                 console.log("radius found")
                 this.eaten = true;
                 this.div.style.background = "green";
+                this.destination = goBack()
                 //food.splice(food.indexOf(foodSingle), 2)
                 foodSingle.remove()
             }
