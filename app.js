@@ -1,7 +1,7 @@
 const box = document.querySelector(".box")
 let id = 0;
 
-let creatureArray = [100];
+let creatureArray = [];
 let food = [100];
 
 function Creature(div, size, speed, destination, destinationReachedLeft, destinationReachedTop, eaten) {
@@ -16,6 +16,7 @@ function Creature(div, size, speed, destination, destinationReachedLeft, destina
     this.destinationReachedTop = destinationReachedTop;
     this.eaten = eaten;
     console.log(this)
+    this.div.innerText = id
 }
 
 function getDestination() {
@@ -81,7 +82,8 @@ Creature.prototype.move = function () {
 
 function createCreatures(amount) {
     for (let i = 0; i < amount; i++) {
-        creatureArray[i] = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false, false);
+        const c = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false, false);
+        creatureArray.push(c)
         const rnd = getDestination()
         const oneTwo = Math.random()
         if (oneTwo < 0.5) {
@@ -106,15 +108,34 @@ function generateFood(amount) {
     }
 }
 
-createCreatures(20)
-generateFood(20)
+createCreatures(10)
+generateFood(50)
+
+setInterval(function (){
+    // const survivors = 0;
+    for(creatureS of creatureArray){
+        if(!creatureS.eaten){
+            creatureS.div.remove()
+            creatureArray.splice(creatureArray.indexOf(creatureS), 1)
+        } else {
+            creatureS.destination = getDestination()
+            creatureS.eaten = false;
+            creatureS.div.style.background = "black";
+            createCreatures(1);
+            //survivors++;
+        }
+    }
+    generateFood(50)
+    //alert(survivors)
+    console.log(creatureArray)
+},6000)
 
 setInterval(function () {
     for (creatureS of creatureArray) {
         creatureS.move()
         creatureS.eat()
     }
-}, 1);
+}, 10);
 
 
 Creature.prototype.eat = function () {
@@ -122,11 +143,11 @@ Creature.prototype.eat = function () {
         if (!this.eaten) {
             const topDifference = this.div.getBoundingClientRect().top - foodSingle.getBoundingClientRect().top
             const leftDifference = this.div.getBoundingClientRect().left - foodSingle.getBoundingClientRect().left
-            if(((topDifference < 7 && topDifference > 0) || (topDifference < 0 && topDifference > -7)) && ((leftDifference < 7 && leftDifference > 0) || (leftDifference < 0 && leftDifference > -7))){
+            if(((topDifference < 10 && topDifference > 0) || (topDifference < 0 && topDifference > -24)) && ((leftDifference < 10 && leftDifference > 0) || (leftDifference < 0 && leftDifference > -24))){
                 console.log("radius found")
                 this.eaten = true;
                 this.div.style.background = "green";
-                food.splice(food.indexOf(foodSingle), 2)
+                //food.splice(food.indexOf(foodSingle), 2)
                 foodSingle.remove()
             }
             
