@@ -21,17 +21,17 @@ function Creature(div, size, speed, destination, destinationReachedLeft, destina
 }
 
 function getDestination() {
-    const randomPositionLeft = Math.floor(Math.random() * 1500) + 150
-    const randomPositionTop = Math.floor(Math.random() * 600) + 200
+    const randomPositionLeft = Math.floor(Math.random() * 1509) + 199
+    const randomPositionTop = Math.floor(Math.random() * 600) + 150
     return [randomPositionLeft, randomPositionTop]
 }
 
 function goBack(){
-        const destination = [0, Math.floor(Math.random() * 600) + 200]
+        const destination = [0, Math.floor(Math.random() * 600) + 150]
         if (Math.random() < 0.5) {
-            destination[0] = 100;
+            destination[0] = 165;
         } else {
-            destination[0] = 1700;
+            destination[0] = 1750;
         }
         return destination;
 }
@@ -93,9 +93,9 @@ function createCreatures(amount) {
         const rnd = getDestination()
         const oneTwo = Math.random()
         if (oneTwo < 0.5) {
-            creatureArray[i].div.style.left = "100px";
+            creatureArray[i].div.style.left = "165px";
         } else {
-            creatureArray[i].div.style.left = "1700px";
+            creatureArray[i].div.style.left = "1750px";
 
         }
         creatureArray[i].div.style.top = rnd[1] + 'px';
