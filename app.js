@@ -98,7 +98,7 @@ function generateFood(amount) {
     for (let i = 0; i < amount; i++) {
         food[i] = document.createElement("div")
         food[i].classList.add("food")
-        box.append(food[i])
+        box.appendChild(food[i])
         const rnd = getDestination()
         food[i].style.left = rnd[0] + 'px';
         food[i].style.top = rnd[1] + 'px';
@@ -114,16 +114,22 @@ setInterval(function () {
         creatureS.move()
         creatureS.eat()
     }
-}, 2);
+}, 1);
 
 
 Creature.prototype.eat = function () {
     for (foodSingle of food) {
         if (!this.eaten) {
-            if (this.div.getBoundingClientRect().top === foodSingle.getBoundingClientRect().top && this.div.getBoundingClientRect().left === foodSingle.getBoundingClientRect().left) {
+            const topDifference = this.div.getBoundingClientRect().top - foodSingle.getBoundingClientRect().top
+            const leftDifference = this.div.getBoundingClientRect().left - foodSingle.getBoundingClientRect().left
+            if(((topDifference < 7 && topDifference > 0) || (topDifference < 0 && topDifference > -7)) && ((leftDifference < 7 && leftDifference > 0) || (leftDifference < 0 && leftDifference > -7))){
+                console.log("radius found")
                 this.eaten = true;
-                food.splice (food.indexOf(foodSingle), 2)
+                this.div.style.background = "green";
+                food.splice(food.indexOf(foodSingle), 2)
+                foodSingle.remove()
             }
+            
         }
 
     }
