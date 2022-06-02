@@ -1,6 +1,8 @@
 const box = document.querySelector(".box")
 let id = 0;
 
+let creatureArray = [100];
+
 function Creature(div, size, speed, destination, destinationReachedLeft, destinationReachedTop) {
     this.id = id++;
     this.div = div;
@@ -12,7 +14,7 @@ function Creature(div, size, speed, destination, destinationReachedLeft, destina
     this.destinationReachedLeft = destinationReachedLeft;
     this.destinationReachedTop = destinationReachedTop;
     //??? this.move = move()??
-    this.move()
+   // this.move()
 
 
     console.log(this)
@@ -52,36 +54,20 @@ Creature.prototype.move = function () {
     }
 }
 
-setInterval(function () {
-    creature.move()
-    creature2.move()
-    creature3.move()
-    creature4.move()
-    creature5.move()
-    creature6.move()
-    creature7.move()
-    creature8.move()
-    creature9.move()
-    creature10.move()
-}, 1);
-
-const creature = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature2 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature3 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature4 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature5 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature6 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature7 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature8 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature9 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-const creature10 = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
-
-
 function createCreatures(amount) {
     for (let i = 0; i < amount; i++) {
-        new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
+        creatureArray[i] = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false);
 
     }
 }
 
 createCreatures(100)
+
+setInterval(function () {
+
+    for(creatureS of creatureArray){
+        creatureS.move()
+    }
+}, 1);
+
+
