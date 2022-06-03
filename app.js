@@ -36,6 +36,48 @@ function goBack(){
         return destination;
 }
 
+Creature.prototype.goBack = function (){
+    const destination = this.destination;
+
+    const distanceTop = this.div.getBoundingClientRect().top - 130;
+    const distanceBottom = 640 + 130 - this.div.getBoundingClientRect().top;
+    const distanceLeft = this.div.getBoundingClientRect().left - 199;
+    const distanceRight = 1509 + 199 - this.div.getBoundingClientRect().left;
+
+    let shortestWay = 0;
+    if(distanceTop < distanceRight){
+        shortestWay = distanceTop
+    } 
+    if(distanceBottom < shortestWay) {
+        shortestWay = distanceBottom
+    }
+    if(distanceLeft < shortestWay){
+        shortestWay = distanceLeft
+    }
+    if(distanceRight < shortestWay){
+        shortestWay = distanceRight
+    }
+
+    if(shortestWay === distanceTop){
+        destination[0] =  this.div.getBoundingClientRect().left;
+        destination[1] = 130;
+    }
+    if(shortestWay === distanceBottom){
+        destination[0] = this.div.getBoundingClientRect().left
+        destination[1] = 770
+    }
+    if(shortestWay === distanceLeft){
+        destination[0] = 199;
+        destination[1] =  this.div.getBoundingClientRect().top;
+    }
+    if(shortestWay === distanceRight){
+        destination[0] = 1708;
+        destination[1] =  this.div.getBoundingClientRect().top;
+    }
+    console.log(`Top: ${distanceTop} Bottom: ${distanceBottom} Left: ${distanceLeft} Right: ${distanceRight}` )
+        return destination
+}
+
 Creature.prototype.move = function () {
     if (!this.eaten) {
         //Left
@@ -120,8 +162,11 @@ function removeFood(){
     }
 }
 
-createCreatures(10)
-generateFood(100)
+createCreatures(40)
+generateFood(20)
+
+let generation = 0;
+let population = 0;
 
 setInterval(function (){
     for(creatureS of creatureArray){
@@ -136,21 +181,22 @@ setInterval(function (){
         }
     }
     removeFood();
-    generateFood(100)
+    generateFood(20)
     let population = 0;
     for(creatureS of creatureArray){
         population++;
     }
-    populationText.innerText = `Population: ${population}`
+    generation++;
+    populationText.innerText = `Population: ${population} / Gen: ${generation}`
     console.log(creatureArray)
-},6000)
+},40000)
 
 setInterval(function () {
     for (creatureS of creatureArray) {
         creatureS.move()
         creatureS.eat()
     }
-}, 10);
+}, 1);
 
 
 Creature.prototype.eat = function () {
@@ -159,11 +205,9 @@ Creature.prototype.eat = function () {
             const topDifference = this.div.getBoundingClientRect().top - foodSingle.getBoundingClientRect().top
             const leftDifference = this.div.getBoundingClientRect().left - foodSingle.getBoundingClientRect().left
             if(((topDifference < 10 && topDifference > 0) || (topDifference < 0 && topDifference > -24)) && ((leftDifference < 10 && leftDifference > 0) || (leftDifference < 0 && leftDifference > -24))){
-                console.log("radius found")
                 this.eaten = true;
                 this.div.style.background = "green";
-                this.destination = goBack()
-                //food.splice(food.indexOf(foodSingle), 2)
+                this.destination = this.goBack()
                 foodSingle.remove()
             }
             
