@@ -26,7 +26,7 @@ function getDestination() {
     return [randomPositionLeft, randomPositionTop]
 }
 
-function goBack(){
+/* function goBack(){
         const destination = [0, Math.floor(Math.random() * 600) + 150]
         if (Math.random() < 0.5) {
             destination[0] = 165;
@@ -35,7 +35,7 @@ function goBack(){
         }
         return destination;
 }
-
+ */
 Creature.prototype.goBack = function (){
     const destination = this.destination;
 
@@ -44,10 +44,8 @@ Creature.prototype.goBack = function (){
     const distanceLeft = this.div.getBoundingClientRect().left - 199;
     const distanceRight = 1509 + 199 - this.div.getBoundingClientRect().left;
 
-    let shortestWay = 0;
-    if(distanceTop < distanceRight){
-        shortestWay = distanceTop
-    } 
+    let shortestWay = distanceTop;
+    
     if(distanceBottom < shortestWay) {
         shortestWay = distanceBottom
     }
@@ -163,7 +161,7 @@ function removeFood(){
 }
 
 createCreatures(40)
-generateFood(20)
+generateFood(33)
 
 let generation = 0;
 let population = 0;
@@ -181,7 +179,7 @@ setInterval(function (){
         }
     }
     removeFood();
-    generateFood(20)
+    generateFood(33)
     let population = 0;
     for(creatureS of creatureArray){
         population++;
