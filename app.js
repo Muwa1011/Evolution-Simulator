@@ -5,7 +5,7 @@ let id = 0;
 let creatureArray = [];
 let food = [100];
 
-function Creature(div, size, speed, destination, destinationReachedLeft, destinationReachedTop, eaten) {
+function Creature(div, size, speed, destination, destinationReachedLeft, destinationReachedTop, amountEaten, eaten, replicate) {
     this.id = id++;
     this.div = div;
     this.div.classList.add("creature")
@@ -15,7 +15,9 @@ function Creature(div, size, speed, destination, destinationReachedLeft, destina
     this.destination = destination;
     this.destinationReachedLeft = destinationReachedLeft;
     this.destinationReachedTop = destinationReachedTop;
+    this.amountEaten = amountEaten
     this.eaten = eaten;
+    this.replicate = replicate
     console.log(this)
     this.div.innerText = id
 }
@@ -26,16 +28,6 @@ function getDestination() {
     return [randomPositionLeft, randomPositionTop]
 }
 
-/* function goBack(){
-        const destination = [0, Math.floor(Math.random() * 600) + 150]
-        if (Math.random() < 0.5) {
-            destination[0] = 165;
-        } else {
-            destination[0] = 1750;
-        }
-        return destination;
-}
- */
 Creature.prototype.goBack = function (){
     const destination = this.destination;
 
@@ -72,12 +64,11 @@ Creature.prototype.goBack = function (){
         destination[0] = 1708;
         destination[1] =  this.div.getBoundingClientRect().top;
     }
-    console.log(`Top: ${distanceTop} Bottom: ${distanceBottom} Left: ${distanceLeft} Right: ${distanceRight}` )
         return destination
 }
 
 Creature.prototype.move = function () {
-    if (!this.eaten) {
+    if (this.amountEaten < 2) {
         //Left
         if (this.div.getBoundingClientRect().left < this.destination[0]) {
             this.div.style.left = this.div.getBoundingClientRect().left + 1 + 'px';
@@ -128,7 +119,7 @@ Creature.prototype.move = function () {
 
 function createCreatures(amount) {
     for (let i = 0; i < amount; i++) {
-        const c = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false, false);
+        const c = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false, 0, false, false);
         creatureArray.push(c)
         const rnd = getDestination()
         const oneTwo = Math.random()
@@ -136,10 +127,19 @@ function createCreatures(amount) {
             creatureArray[i].div.style.left = "165px";
         } else {
             creatureArray[i].div.style.left = "1750px";
-
         }
         creatureArray[i].div.style.top = rnd[1] + 'px';
     }
+}
+
+function createCreatureOne(parent){
+    const c = new Creature(document.createElement("div"), 1, 1, getDestination(), false, false, 0, false, false);
+    creatureArray.push(c)
+    c.div.style.top = creatureArray[creatureArray.indexOf(parent)].div.getBoundingClientRect().top
+    c.div.style.left = creatureArray[creatureArray.indexOf(parent)].div.getBoundingClientRect().left
+    console.log("c" + c.id)
+    console.log("parent" + parent.id)
+
 }
 
 function generateFood(amount) {
@@ -160,8 +160,8 @@ function removeFood(){
     }
 }
 
-createCreatures(40)
-generateFood(33)
+createCreatures(10)
+generateFood(40)
 
 let generation = 0;
 let population = 0;
@@ -174,12 +174,17 @@ setInterval(function (){
         } else {
             creatureS.destination = getDestination()
             creatureS.eaten = false;
+            creatureS.amountEaten = 0;
             creatureS.div.style.background = "black";
-            createCreatures(1);
+            if(creatureS.replicate){
+               // createCreatures(1);
+                createCreatureOne(creatureS)
+                creatureS.replicate = false;
+            }
         }
     }
     removeFood();
-    generateFood(33)
+    generateFood(40)
     let population = 0;
     for(creatureS of creatureArray){
         population++;
@@ -199,14 +204,20 @@ setInterval(function () {
 
 Creature.prototype.eat = function () {
     for (foodSingle of food) {
-        if (!this.eaten) {
+        if (this.amountEaten < 2) {
             const topDifference = this.div.getBoundingClientRect().top - foodSingle.getBoundingClientRect().top
             const leftDifference = this.div.getBoundingClientRect().left - foodSingle.getBoundingClientRect().left
             if(((topDifference < 10 && topDifference > 0) || (topDifference < 0 && topDifference > -24)) && ((leftDifference < 10 && leftDifference > 0) || (leftDifference < 0 && leftDifference > -24))){
+                this.amountEaten++;
                 this.eaten = true;
                 this.div.style.background = "green";
                 this.destination = this.goBack()
                 foodSingle.remove()
+                if(this.amountEaten === 2){
+                    this.div.style.background = "purple";
+                    this.replicate = true;
+                }
+                //console.log(this)
             }
             
         }

@@ -24,3 +24,12 @@
     background-color: rgb(255, 159, 49);
     border-radius: 50%;
 }
+
+#slidebars{
+    width: 300px;
+    height: 100px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    background-color: antiquewhite;
+}
